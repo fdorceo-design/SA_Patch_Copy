@@ -259,6 +259,7 @@ function renderSidebar(){
    if(collapsed)return;
 
    const libs=DATA.map((x,i)=>({x,i})).filter(o=>o.x.section===section&&isLibraryVisible(o.x));
+   libs.sort((a,b)=>a.x.displayName.localeCompare(b.x.displayName));
    if(!libs.length){
      const p=document.createElement('div');p.className='placeholder';
      p.textContent=section==='Kontakt'?'あとで統合':'非表示またはなし';sidebar.appendChild(p);return;
@@ -360,7 +361,7 @@ function renderMain(resetScroll=true){
 function renderSettings(){
  settingsBody.innerHTML='';
  SECTIONS.forEach(section=>{
-   const libs=DATA.filter(x=>x.section===section);
+   const libs=DATA.filter(x=>x.section===section).sort((a,b)=>a.displayName.localeCompare(b.displayName));
    const wrap=document.createElement('div');wrap.className='settingsSection';
    const headerRow=document.createElement('label');headerRow.className='toggleRow';headerRow.style.fontWeight='700';
    const sectionCb=document.createElement('input');sectionCb.type='checkbox';sectionCb.checked=!hiddenSections.has(section);
