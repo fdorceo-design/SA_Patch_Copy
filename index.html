@@ -266,8 +266,10 @@ function renderSidebar(){
    }
    libs.forEach(o=>{
      let count=0;
-     if(o.x.groups)count=o.x.groups.filter(g=>!hiddenUnits.has(unitId(o.x,g.unit||o.x.displayName))).reduce((a,g)=>a+g.patches.length,0);
-     else count=o.x.patches.length;
+     if(o.x.groups||o.x.unitPatches){
+       if(o.x.groups)count+=o.x.groups.filter(g=>!hiddenUnits.has(unitId(o.x,g.unit||o.x.displayName))).reduce((a,g)=>a+g.patches.length,0);
+       if(o.x.unitPatches)count+=Object.keys(o.x.unitPatches).filter(u=>!hiddenUnits.has(unitId(o.x,u))).reduce((a,u)=>a+o.x.unitPatches[u].length,0);
+     }else count=o.x.patches.length;
      const b=document.createElement('button');b.className='lib'+(o.i===current?' active':'');
      b.innerHTML=`<span class="libname">${o.x.displayName}</span><span class="count">${count}</span>`;
      b.onclick=()=>{current=o.i;renderSidebar();renderMain();};sidebar.appendChild(b);
